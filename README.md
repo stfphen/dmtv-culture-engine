@@ -107,6 +107,25 @@ Store links + attribution; prefer original commentary over copied text; never st
 
 ---
 
+## v0.2 — Visual engine, media library, expanded sources
+
+**Real DMTV brand.** Templates now match the deck system: black background, white Helvetica-style caps, **Poppins** secondary, **gold** lightning accent, and your DM logo embedded from `public/brand/dmtv-logo.png`. Replace that file with your exact logo (same path) for a 1:1 mark. Brand colors/logo are editable in **Settings**.
+
+**Rights-safe visual sourcing** (`lib/culture-engine/visual.js`). For each item the engine picks one on-brand background image, preferring publishable sources in this order:
+
+1. **DMTV Media Library** — your owned uploads (add in the **Media Library** tab; drop files in `public/media/` and reference `/media/name.jpg`). Zero rights risk. Matched to items by tag.
+2. **AI-generated originals** — only if `OPENAI_API_KEY` is set (uses `IMAGE_MODEL`). Unique, no licensing.
+3. **Licensed stock** — Pexels / Unsplash via free API keys (`PEXELS_API_KEY`, `UNSPLASH_ACCESS_KEY`), keyed to the item's topic. Attribution stored automatically.
+4. **Source image** — the article's own og:image is kept as **reference only**, flagged and **never** baked into a published graphic.
+
+The chosen image is composited under a dark gradient scrim with the headline + logo. Each draft shows the visual's provider, rights, and attribution; reference-only images are marked "not cleared to publish." Instagram/TikTok stay manual-import + commentary/reference only — the engine never scrapes or recreates copyrighted social posts.
+
+**Expanded sources** — ~28 seeds across RSS (Pitchfork, Stereogum, FADER, XXL, HipHopDX, Hypebeast, Highsnobiety, Complex, Dazed, Sneaker News…), Reddit (r/hiphopheads, r/streetwear, r/toronto…), Toronto/local (BlogTO, NOW, Exclaim!, RA Toronto), plus YouTube-as-RSS, podcast, and social-tracker placeholders you fill in.
+
+**New env keys:** `PEXELS_API_KEY`, `UNSPLASH_ACCESS_KEY`, `IMAGE_MODEL` (see `.env.example`). All optional — the engine degrades to text-only cards without them. A 12th table, `culture_media`, backs the library.
+
+---
+
 ## Project map
 
 ```

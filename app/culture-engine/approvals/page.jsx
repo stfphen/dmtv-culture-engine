@@ -28,7 +28,7 @@ export default function Approvals() {
         <div className="small muted" style={{ marginBottom: 6 }}>
           {r.item?.title} · {r.item?.source_name} {r.score?.final_score != null && <>· <Score value={r.score.final_score} /></>}
         </div>
-        <IdeaCard idea={r.idea} caption={r.caption} onChanged={load} onToast={toast} />
+        <IdeaCard idea={r.idea} caption={r.caption} preview={r.preview} onChanged={load} onToast={toast} />
       </div>
     ))}</div>
   </div>);

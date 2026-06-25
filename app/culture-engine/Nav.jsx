@@ -7,6 +7,7 @@ const TABS = [
   ["Culture Feed", "/culture-engine/feed"],
   ["Draft Queue", "/culture-engine/drafts"],
   ["Approval Queue", "/culture-engine/approvals"],
+  ["Media Library", "/culture-engine/media"],
   ["Brand Templates", "/culture-engine/templates"],
   ["Settings", "/culture-engine/settings"],
 ];

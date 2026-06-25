@@ -190,18 +190,34 @@ CREATE TABLE IF NOT EXISTS culture_engine_runs (
 CREATE TABLE IF NOT EXISTS culture_brand_settings (
   id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   tenant_key    TEXT UNIQUE NOT NULL DEFAULT 'dmtv',
-  logo_url      TEXT,
+  logo_url      TEXT DEFAULT '/brand/dmtv-logo.png',
   logo_text     TEXT DEFAULT 'DMTV',
   primary_color TEXT DEFAULT '#0A0A0A',
   secondary_color TEXT DEFAULT '#F5F5F0',
-  accent_color  TEXT DEFAULT '#E11D2A',
+  accent_color  TEXT DEFAULT '#E8C24A',
   background_style TEXT DEFAULT 'dark_grain',
-  font_heading  TEXT DEFAULT 'Helvetica Neue, Arial, sans-serif',
-  font_body     TEXT DEFAULT 'Helvetica Neue, Arial, sans-serif',
-  watermark_position TEXT DEFAULT 'bottom_right',
+  font_heading  TEXT DEFAULT 'Helvetica Neue, Helvetica, Arial, sans-serif',
+  font_body     TEXT DEFAULT 'Poppins, Helvetica Neue, Arial, sans-serif',
+  watermark_position TEXT DEFAULT 'bottom_left',
   default_cta   TEXT DEFAULT 'More on DMTV',
   default_footer TEXT DEFAULT '@dmtv',
   template_pack TEXT DEFAULT 'dmtv_core',
   config        JSONB DEFAULT '{}',
   updated_at    TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+
+-- 12. culture_media  (owned uploads + cached visual references)
+CREATE TABLE IF NOT EXISTS culture_media (
+  id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  title       TEXT,
+  image_url   TEXT NOT NULL,
+  local_path  TEXT,
+  provider    TEXT NOT NULL DEFAULT 'upload',  -- upload|pexels|unsplash|ai|source_reference
+  tags        JSONB NOT NULL DEFAULT '[]',
+  rights      TEXT NOT NULL DEFAULT 'owned',   -- owned|licensed|original_ai|reference_only
+  attribution TEXT,
+  publishable BOOLEAN NOT NULL DEFAULT TRUE,
+  notes       TEXT,
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS idx_media_provider ON culture_media(provider);

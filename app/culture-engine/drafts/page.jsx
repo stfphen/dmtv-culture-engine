@@ -33,7 +33,7 @@ export default function Drafts() {
             {g.summary.risk_notes && <p className="small" style={{ color: "var(--warn)", margin: "6px 0 0" }}><strong>Risk:</strong> {g.summary.risk_notes}</p>}</>}
         </div>
         <div className="grid">{g.ideas.map(idea => (
-          <IdeaCard key={idea.id} idea={idea} caption={idea.caption} onChanged={load} onToast={toast} />
+          <IdeaCard key={idea.id} idea={idea} caption={idea.caption} preview={idea.preview} onChanged={load} onToast={toast} />
         ))}</div>
       </div>
     ))}

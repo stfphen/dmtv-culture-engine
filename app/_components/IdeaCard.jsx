@@ -10,7 +10,9 @@ function CaptionRow({ label, text }) {
   </div>;
 }
 
-export default function IdeaCard({ idea, caption, onChanged, onToast }) {
+export default function IdeaCard({ idea, caption, preview, onChanged, onToast }) {
+  const visual = preview?.fields?.visual || null;
+  const reference = preview?.fields?.reference || null;
   const [busy, setBusy] = useState(false);
   const [c, setC] = useState(caption);
   const previewUrl = `/api/render/${idea.id}`;
@@ -49,6 +51,8 @@ export default function IdeaCard({ idea, caption, onChanged, onToast }) {
       </div>
       <div>
         <img className="preview" src={previewUrl} alt="DMTV preview" />
+        {visual && <p className="small muted" style={{ margin: "6px 0 0" }}>Visual: <strong>{visual.provider}</strong> ({visual.rights}){visual.attribution ? ` — ${visual.attribution}` : ""}</p>}
+        {reference && <p className="small" style={{ margin: "4px 0 0", color: "var(--warn)" }}>⚠ Source image kept as <a href={reference.image_url} target="_blank" rel="noreferrer" style={{ textDecoration: "underline" }}>reference</a> only — not cleared to publish.</p>}
         <div className="row" style={{ marginTop: 8 }}>
           <a className="btn ghost copybtn" href={`${previewUrl}?download=1`} download>Download SVG</a>
           <button className="btn ghost copybtn" onClick={regenerate} disabled={busy}>Regenerate</button>
