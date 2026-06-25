@@ -107,6 +107,24 @@ Store links + attribution; prefer original commentary over copied text; never st
 
 ---
 
+## v0.3 — Asset packages, franchises, carousels, PNG export
+
+The engine now runs like a **culture desk**, not a link-packager. Each strong item becomes a full **asset package** instead of 3 lookalike posts:
+
+- **post** (Culture Radar / DMTV Take / Scene Watch), **quote card**, **carousel** (cover hook + value slides), **mood image**, and a **clip brief** (the vertical cut-points to pull if the source has video).
+- Every asset is tagged with the **engagement signal** it targets — `sends` (quote cards, hot takes), `saves` (carousels, mood grids), `comments` (debates) — per Instagram's 2026 ranking signals.
+- Each item is routed to a **franchise** from the DMTV slate (Culture Radar, DMTV Take, Before It Pops, Rate This Fit, Who Ran The City, Weekend Map, Best Toronto Bars, Aesthetic Breakdown) — see `lib/culture-engine/franchises.js`.
+- Strategy + research behind this is in **`DMTV_CONTENT_STRATEGY.md`** (read it — it's the playbook).
+
+**Carousels & PNG export.** Carousels render as multiple slides (cover → value → CTA). Every preview exports **scheduler-ready PNG** at 1080px via `@resvg/resvg-js`, with automatic SVG fallback if the rasterizer isn't installed:
+`/api/render/[ideaId]?format=png` · carousel slide N: `?slide=N&format=png` · `&download=1` to download.
+
+> Run `npm install` after pulling v0.3 to get `@resvg/resvg-js` (PNG export). Without it, the engine serves SVG. New schema columns on `culture_content_ideas` (`asset_type`, `target_signal`, `franchise`, `package_id`, `payload`) apply automatically on fresh installs; for an existing Postgres DB re-run `npm run migrate` (idempotent `ALTER`s included).
+
+As always, the editorial quality only comes alive with your **Anthropic key** set — mock mode still produces a valid package, just with heuristic copy.
+
+---
+
 ## v0.2 — Visual engine, media library, expanded sources
 
 **Real DMTV brand.** Templates now match the deck system: black background, white Helvetica-style caps, **Poppins** secondary, **gold** lightning accent, and your DM logo embedded from `public/brand/dmtv-logo.png`. Replace that file with your exact logo (same path) for a 1:1 mark. Brand colors/logo are editable in **Settings**.

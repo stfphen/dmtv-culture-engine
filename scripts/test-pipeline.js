@@ -41,17 +41,27 @@ async function main() {
   ok("final score 0-100", fin.final_score >= 0 && fin.final_score <= 100);
   ok("Toronto/hip-hop item scores well (>=60)", fin.final_score >= 60);
 
-  // 5. full draft package
-  const { ideaIds, score } = await generateDraftsForItem(item.id);
-  ok("exactly 3 ideas generated", ideaIds.length === 3);
+  // 5. full asset package
+  const { ideaIds, score, franchise } = await generateDraftsForItem(item.id);
+  ok("package generated (>=4 assets)", ideaIds.length >= 4);
+  ok("franchise routed", !!franchise);
   ok("score saved", !!score && typeof score.final_score === "number");
 
-  const idea0 = await store.getIdea(ideaIds[0]);
-  ok("idea has format recommendation", !!idea0.format_recommendation);
-  const cap = await store.getCaption(ideaIds[0]);
+  const ideas = await store.listIdeasForItem(item.id);
+  const types = ideas.map(i => i.asset_type);
+  ok("package has a carousel", types.includes("carousel"));
+  ok("package has a quote_card", types.includes("quote_card"));
+  ok("assets carry target_signal", ideas.some(i => !!i.target_signal));
+
+  const idea0 = ideas[0];
+  const cap = await store.getCaption(idea0.id);
   ok("captions generated (IG + hashtags)", !!cap.instagram && Array.isArray(cap.hashtags) && cap.hashtags.length > 0);
-  const prev = await store.getPreview(ideaIds[0]);
+  const prev = await store.getPreview(idea0.id);
   ok("svg preview generated", !!prev.svg && prev.svg.includes("<svg"));
+
+  const carousel = ideas.find(i => i.asset_type === "carousel");
+  const cprev = await store.getPreview(carousel.id);
+  ok("carousel has multiple slides", Array.isArray(cprev.fields.slides) && cprev.fields.slides.length >= 3);
 
   // 6. approval status change
   await store.updateIdea(idea0.id, { status: "approved" });

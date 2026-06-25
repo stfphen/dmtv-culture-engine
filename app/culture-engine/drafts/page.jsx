@@ -17,7 +17,7 @@ export default function Drafts() {
 
   return (<div>
     {node}
-    <h1>Draft Queue</h1><p className="sub">Each item packaged into 3 DMTV ideas with captions + a branded preview. Review, edit, approve.</p>
+    <h1>Draft Queue</h1><p className="sub">Each item packaged into a full DMTV asset set — post, quote card, carousel, mood image, clip brief — with captions + branded previews. Review, edit, approve.</p>
     {!groups.length && <div className="card"><p className="muted">No drafts yet. Generate drafts from the Culture Feed.</p></div>}
     {groups.map(g => (
       <div key={g.item.id} style={{ marginBottom: 26 }}>

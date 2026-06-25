@@ -110,6 +110,11 @@ CREATE TABLE IF NOT EXISTS culture_content_ideas (
   required_assets JSONB DEFAULT '[]',
   risk_level  TEXT,
   production_effort TEXT, -- low|medium|high
+  asset_type  TEXT NOT NULL DEFAULT 'post',  -- post|quote_card|carousel|mood_image|clip_brief
+  target_signal TEXT,                         -- sends|saves|comments
+  franchise   TEXT,
+  package_id  UUID,
+  payload     JSONB NOT NULL DEFAULT '{}',
   status      TEXT NOT NULL DEFAULT 'draft', -- draft|needs_review|approved|rejected|exported|archived
   rights_notes TEXT,
   created_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
@@ -221,3 +226,11 @@ CREATE TABLE IF NOT EXISTS culture_media (
   created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 CREATE INDEX IF NOT EXISTS idx_media_provider ON culture_media(provider);
+
+-- v0.3 asset-package columns (safe to re-run)
+ALTER TABLE culture_content_ideas ADD COLUMN IF NOT EXISTS asset_type TEXT NOT NULL DEFAULT 'post';
+ALTER TABLE culture_content_ideas ADD COLUMN IF NOT EXISTS target_signal TEXT;
+ALTER TABLE culture_content_ideas ADD COLUMN IF NOT EXISTS franchise TEXT;
+ALTER TABLE culture_content_ideas ADD COLUMN IF NOT EXISTS package_id UUID;
+ALTER TABLE culture_content_ideas ADD COLUMN IF NOT EXISTS payload JSONB NOT NULL DEFAULT '{}';
+CREATE INDEX IF NOT EXISTS idx_ideas_package ON culture_content_ideas(package_id);
