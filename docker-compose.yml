@@ -1,0 +1,16 @@
+# Spin up Postgres on your VPS:  docker compose up -d
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: dmtv_culture_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: dmtv
+      POSTGRES_PASSWORD: dmtv
+      POSTGRES_DB: dmtv_culture
+    ports:
+      - "5432:5432"
+    volumes:
+      - dmtv_pgdata:/var/lib/postgresql/data
+volumes:
+  dmtv_pgdata:

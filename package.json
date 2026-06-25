@@ -1,0 +1,24 @@
+{
+  "name": "dmtv-culture-engine",
+  "version": "0.1.0",
+  "private": true,
+  "description": "DMTV Culture Engine \u2014 content intelligence & packaging MVP",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "migrate": "node scripts/migrate.js",
+    "seed": "node scripts/seed.js",
+    "run:daily": "node scripts/run-daily.js",
+    "test": "node scripts/test-pipeline.js"
+  },
+  "dependencies": {
+    "next": "14.2.35",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "pg": "8.12.0",
+    "rss-parser": "3.13.0"
+  },
+  "devDependencies": {},
+  "type": "module"
+}

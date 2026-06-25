@@ -1,0 +1,6 @@
+# VPS crontab example — run the DMTV daily pull at 9:00 AM Toronto time.
+# Edit with: crontab -e   (set CRON_SECRET to match your .env)
+0 9 * * *  curl -s -X POST https://your-domain.com/api/run -H "x-cron-secret: YOUR_SECRET" >> /var/log/dmtv-pull.log 2>&1
+
+# Or run the script directly on the box (no HTTP):
+# 0 9 * * *  cd /opt/dmtv-culture-engine && /usr/bin/npm run run:daily >> /var/log/dmtv-pull.log 2>&1
