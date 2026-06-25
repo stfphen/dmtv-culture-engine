@@ -125,6 +125,24 @@ As always, the editorial quality only comes alive with your **Anthropic key** se
 
 ---
 
+## Connecting Claude (three layers)
+
+The engine is built so Claude powers everything except photographic image generation (which Anthropic deliberately doesn't do). See `DESIGN_SYSTEM.md` for the design-handoff spec.
+
+**1. Editorial layer → Claude API.** Add `ANTHROPIC_API_KEY` to `.env` and the summaries, scoring, ideas, captions, and asset-package generator run on Claude instead of mock heuristics. Verify it's live:
+
+```bash
+npm run check:ai     # prints provider status + does a live Claude call
+```
+
+**2. Design layer → Claude Design** (Anthropic Labs, research preview; needs Pro/Max/Team/Enterprise). Point it at this repo + `DESIGN_SYSTEM.md` + `public/brand/dmtv-logo.png` + the DMTV×DGTL deck. It locks the DMTV system and lets you design improved templates / carousel layouts / dashboard screens, then emits a handoff bundle Claude Code drops into `lib/culture-engine/renderTemplate.js` and `app/`. This is how you upgrade the *look* beyond the hand-coded SVG templates.
+
+**3. Photo layer → image-gen provider.** Claude has no native image generation, so AI-original visuals use **Gemini 2.5 Flash Image ("Nano Banana")** or OpenAI. Add `GEMINI_API_KEY` (or `OPENAI_API_KEY`) and the visual engine will produce on-brand original backgrounds; otherwise it falls back to your Media Library and licensed stock. `IMAGE_PROVIDER` (`gemini`|`openai`, blank = auto) picks the model. Canva's image generation is also available as a Claude MCP connector if you prefer that route in the manual workflow.
+
+The full loop: **Claude API runs the desk → Claude Design owns the look → Gemini/owned media fills the photography → the engine packages and routes it.**
+
+---
+
 ## v0.2 — Visual engine, media library, expanded sources
 
 **Real DMTV brand.** Templates now match the deck system: black background, white Helvetica-style caps, **Poppins** secondary, **gold** lightning accent, and your DM logo embedded from `public/brand/dmtv-logo.png`. Replace that file with your exact logo (same path) for a 1:1 mark. Brand colors/logo are editable in **Settings**.

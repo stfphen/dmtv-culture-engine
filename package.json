@@ -10,7 +10,8 @@
     "migrate": "node scripts/migrate.js",
     "seed": "node scripts/seed.js",
     "run:daily": "node scripts/run-daily.js",
-    "test": "node scripts/test-pipeline.js"
+    "test": "node scripts/test-pipeline.js",
+    "check:ai": "node scripts/check-ai.js"
   },
   "dependencies": {
     "next": "14.2.35",
